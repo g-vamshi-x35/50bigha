@@ -37,7 +37,7 @@ export const builders: Builder[] = [
     name: "Sai Nirman Group",
     logo: "https://images.unsplash.com/photo-1554774853-b415df9eeb92?q=80&w=400&auto=format&fit=crop",
     coverImage:
-      "https://images.unsplash.com/photo-1600607687644-c7531e5f8b8e?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop",
     since: 2011,
     city: "Bhilai",
     verified: true,

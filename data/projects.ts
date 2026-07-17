@@ -63,9 +63,9 @@ export const projects: Project[] = [
     description:
       "A completed, RERA-approved mid-income housing development near the Bhilai steel plant corridor, fully occupied since 2024.",
     image:
-      "https://images.unsplash.com/photo-1600607687644-c7531e5f8b8e?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1600&auto=format&fit=crop",
     gallery: [
-      "https://images.unsplash.com/photo-1600607687644-c7531e5f8b8e?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1600&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1600&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=1600&auto=format&fit=crop",
     ],
