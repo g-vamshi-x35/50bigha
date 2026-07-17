@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #0b0f19;
+  --color-navy: #14213d;
+  --color-navy-light: #1c2c52;
+  --color-gold: #d4af37;
+  --color-gold-soft: #b8935f;
+  --color-gold-light: #f6e6a8;
+  --color-ivory: #f8f6f1;
+  --color-white: #ffffff;
+  --color-surface: #12172a;
+  --color-surface-light: #1a2035;
+  --color-silver: #e6e6e6;
+  --color-soft-gray: #f8f8f8;
+  --color-dark-gray: #2f3640;
+
+  --font-display: var(--font-fraunces), "Times New Roman", serif;
+  --font-body: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-navy: var(--color-navy);
+  --color-navy-light: var(--color-navy-light);
+  --color-gold: var(--color-gold);
+  --color-gold-soft: var(--color-gold-soft);
+  --color-gold-light: var(--color-gold-light);
+  --color-ivory: var(--color-ivory);
+  --color-surface: var(--color-surface);
+  --color-surface-light: var(--color-surface-light);
+  --color-silver: var(--color-silver);
+  --color-soft-gray: var(--color-soft-gray);
+  --color-dark-gray: var(--color-dark-gray);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+* {
+  scrollbar-color: var(--color-gold-soft) var(--color-ink);
+}
+
+html {
+  background: var(--color-ink);
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Grain / noise overlay used on dark sections */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
