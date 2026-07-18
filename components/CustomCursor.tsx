@@ -51,22 +51,26 @@ export default function CustomCursor() {
 
   if (isTouch) return null;
 
+  const scale = label ? 6 : isDown ? 0.7 : 1;
+
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[100] flex items-center justify-center rounded-full border border-gold bg-gold/10 backdrop-blur-[1px] mix-blend-difference"
+      className="pointer-events-none fixed left-0 top-0 z-[100] flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gold bg-gold/10 backdrop-blur-[1px] mix-blend-difference will-change-transform"
       style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
-      animate={{
-        width: label ? 84 : isDown ? 10 : 14,
-        height: label ? 84 : isDown ? 10 : 14,
-        opacity: 1,
-      }}
+      animate={{ scale, opacity: 1 }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
     >
       {label && (
-        <span className="font-body text-[11px] uppercase tracking-[0.15em] text-ivory">
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="font-body text-[11px] uppercase tracking-[0.15em] text-ivory"
+          style={{ scale: 1 / scale }}
+        >
           {label}
-        </span>
+        </motion.span>
       )}
     </motion.div>
   );

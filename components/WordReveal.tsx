@@ -36,9 +36,9 @@ export default function WordReveal({
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden pb-[0.15em] align-bottom">
           <motion.span
-            className="inline-block will-change-transform"
+            className="inline-block will-change-[transform,filter]"
             variants={{
-              hidden: { opacity: 0, y: "40%", filter: "blur(10px)" },
+              hidden: { opacity: 0, y: "40%", filter: "blur(4px)" },
               visible: {
                 opacity: 1,
                 y: "0%",
