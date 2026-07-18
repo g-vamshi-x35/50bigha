@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Button from "./Button";
 import { PropertyCategory } from "@/types";
+import { createClient } from "@/lib/supabase/client";
 
 const categories: PropertyCategory[] = [
   "House",
@@ -39,6 +40,8 @@ export default function ListPropertyForm() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validate = (): boolean => {
     const next: Partial<Record<keyof FormState, string>> = {};
@@ -53,12 +56,33 @@ export default function ListPropertyForm() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
-      setForm(initialState);
+    if (!validate()) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const supabase = createClient();
+    const { error } = await supabase.from("property_submissions").insert({
+      name: form.name.trim(),
+      phone: form.phone.trim(),
+      title: form.title.trim(),
+      category: form.category,
+      price: form.price.trim(),
+      location: form.location.trim(),
+      description: form.description.trim(),
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setSubmitError("Something went wrong submitting your property. Please try again.");
+      return;
     }
+
+    setSubmitted(true);
+    setForm(initialState);
   };
 
   const inputClass =
@@ -197,9 +221,11 @@ export default function ListPropertyForm() {
         to collect them during verification.
       </p>
 
+      {submitError && <p className="mt-4 font-body text-xs text-red-400">{submitError}</p>}
+
       <div className="mt-8">
-        <Button type="submit" variant="primary" cursorLabel="Submit">
-          Submit for verification
+        <Button type="submit" variant="primary" cursorLabel="Submit" disabled={submitting}>
+          {submitting ? "Submitting..." : "Submit for verification"}
         </Button>
       </div>
     </form>

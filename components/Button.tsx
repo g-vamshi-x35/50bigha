@@ -15,6 +15,7 @@ interface ButtonProps {
   cursorLabel?: string;
   onClick?: () => void;
   type?: "button" | "submit";
+  disabled?: boolean;
 }
 
 const variantStyles: Record<Variant, string> = {
@@ -33,11 +34,13 @@ export default function Button({
   cursorLabel = "View",
   onClick,
   type = "button",
+  disabled = false,
 }: ButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (disabled) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -52,6 +55,7 @@ export default function Button({
     "relative inline-flex items-center justify-center whitespace-nowrap rounded-full font-body text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-300",
     variant !== "ghost" && "px-7 py-3.5",
     variantStyles[variant],
+    disabled && "pointer-events-none opacity-50",
     className
   );
 
@@ -74,11 +78,11 @@ export default function Button({
       className="inline-block"
     >
       {href ? (
-        <Link href={href} onClick={onClick}>
+        <Link href={href} onClick={disabled ? undefined : onClick} aria-disabled={disabled}>
           {content}
         </Link>
       ) : (
-        <button type={type} onClick={onClick} className="inline-block">
+        <button type={type} onClick={onClick} disabled={disabled} className="inline-block">
           {content}
         </button>
       )}

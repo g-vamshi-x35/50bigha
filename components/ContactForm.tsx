@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Button from "./Button";
+import { createClient } from "@/lib/supabase/client";
 
 interface FormState {
   name: string;
@@ -16,6 +17,8 @@ export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validate = (): boolean => {
     const next: Partial<FormState> = {};
@@ -28,12 +31,30 @@ export default function ContactForm() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
-      setForm(initialState);
+    if (!validate()) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const supabase = createClient();
+    const { error } = await supabase.from("enquiries").insert({
+      name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      message: form.message.trim(),
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setSubmitError("Something went wrong sending your message. Please try again.");
+      return;
     }
+
+    setSubmitted(true);
+    setForm(initialState);
   };
 
   const field = (
@@ -90,9 +111,10 @@ export default function ContactForm() {
       {field("email", "Email address", "email")}
       {field("phone", "Phone number", "tel")}
       {field("message", "Message", "text", true)}
+      {submitError && <p className="mt-4 font-body text-xs text-red-400">{submitError}</p>}
       <div className="mt-8">
-        <Button type="submit" variant="primary" cursorLabel="Send">
-          Send message
+        <Button type="submit" variant="primary" cursorLabel="Send" disabled={submitting}>
+          {submitting ? "Sending..." : "Send message"}
         </Button>
       </div>
     </form>
